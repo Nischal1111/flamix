@@ -135,7 +135,7 @@ export function MagneticButton({
       }}
       whileTap={{ scale: 0.98 }}
       className={`
-        relative overflow-hidden font-semibold
+        relative overflow-hidden cursor-pointer font-semibold
         transition-all duration-300
         disabled:opacity-50 disabled:cursor-not-allowed
         ${variantStyles[variant]}

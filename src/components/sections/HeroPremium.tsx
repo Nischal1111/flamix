@@ -3,8 +3,8 @@
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { MagneticButton } from "@/components/ui/MagneticButton";
-import { TextRevealWord, CountUp, GradientTextReveal } from "@/components/ui/TextReveal";
-import { GradientMesh, ParticleField } from "@/components/ui/Spotlight";
+import { TextRevealWord, GradientTextReveal } from "@/components/ui/TextReveal";
+import { GradientMesh } from "@/components/ui/Spotlight";
 import { ArrowRight, Play, Sparkles, Zap, Shield, Cpu } from "lucide-react";
 import { staggerReveal, scrollReveal, easings } from "@/lib/scroll-animations";
 
@@ -20,13 +20,7 @@ interface HeroPremiumProps {
     text: string;
     onClick?: () => void;
   };
-  stats?: {
-    value: number;
-    suffix?: string;
-    label: string;
-  }[];
   showFloatingElements?: boolean;
-  showParticles?: boolean;
 }
 
 export function HeroPremium({
@@ -35,14 +29,7 @@ export function HeroPremium({
   subtitle = "We craft innovative software solutions that drive business growth. From cloud infrastructure to AI-powered applications, we turn your vision into reality.",
   primaryCTA = { text: "View Our Work" },
   secondaryCTA = { text: "Watch Demo" },
-  stats = [
-    { value: 150, suffix: "+", label: "Projects Delivered" },
-    { value: 50, suffix: "+", label: "Enterprise Clients" },
-    { value: 99.9, suffix: "%", label: "Uptime Guarantee" },
-    { value: 24, suffix: "/7", label: "Expert Support" },
-  ],
   showFloatingElements = true,
-  showParticles = true,
 }: HeroPremiumProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -81,13 +68,6 @@ export function HeroPremium({
       <GradientMesh className="absolute inset-0">
         <div />
       </GradientMesh>
-
-      {/* Particle field */}
-      {showParticles && (
-        <ParticleField particleCount={30} className="absolute inset-0 pointer-events-none">
-          <div />
-        </ParticleField>
-      )}
 
       {/* Grid pattern overlay */}
       <div
@@ -162,19 +142,6 @@ export function HeroPremium({
         className="relative z-10 w-full"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="mb-8"
-          >
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-sm text-primary">
-              <Sparkles size={14} />
-              <span>Trusted by 50+ Enterprise Clients</span>
-            </span>
-          </motion.div>
-
           {/* Main Heading */}
           <motion.div
             initial="hidden"
@@ -230,7 +197,7 @@ export function HeroPremium({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16 sm:mb-20"
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
             <MagneticButton
               variant="primary"
@@ -259,75 +226,7 @@ export function HeroPremium({
               <span>{secondaryCTA.text}</span>
             </MagneticButton>
           </motion.div>
-
-          {/* Stats Grid */}
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
-            variants={staggerReveal}
-            className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
-          >
-            {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                variants={scrollReveal}
-                whileHover={{
-                  y: -8,
-                  transition: { duration: 0.3, ease: easings.smooth },
-                }}
-                className="group relative p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-muted/60 via-muted/40 to-muted/60 border border-primary/10 backdrop-blur-sm overflow-hidden"
-              >
-                {/* Hover gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                {/* Glow on hover */}
-                <div className="absolute -inset-px rounded-2xl bg-gradient-to-r from-primary via-secondary to-primary opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500 -z-10" />
-
-                <div className="relative z-10">
-                  <div className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent mb-2 bg-[length:200%_auto] group-hover:animate-[shimmer_2s_linear_infinite]">
-                    <CountUp
-                      end={stat.value}
-                      duration={2}
-                      delay={0.5 + index * 0.1}
-                      decimals={stat.value % 1 !== 0 ? 1 : 0}
-                    />
-                    <span className="text-xl sm:text-2xl">{stat.suffix}</span>
-                  </div>
-                  <div className="text-xs sm:text-sm text-foreground/60 font-medium group-hover:text-foreground/80 transition-colors duration-300">
-                    {stat.label}
-                  </div>
-                </div>
-
-                {/* Corner accent */}
-                <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-primary/10 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              </motion.div>
-            ))}
-          </motion.div>
         </div>
-      </motion.div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.5 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
-      >
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="flex flex-col items-center gap-2"
-        >
-          <span className="text-xs text-foreground/40 uppercase tracking-widest">Scroll</span>
-          <div className="w-6 h-10 rounded-full border-2 border-primary/30 flex items-start justify-center p-2">
-            <motion.div
-              animate={{ y: [0, 12, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-              className="w-1.5 h-1.5 rounded-full bg-primary"
-            />
-          </div>
-        </motion.div>
       </motion.div>
     </section>
   );

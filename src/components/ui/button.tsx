@@ -2,8 +2,9 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { MagneticButton as BaseMagneticButton } from "./MagneticButton";
 
-type ButtonVariant = "solid" | "bordered" | "ghost";
+type ButtonVariant = "solid" | "bordered" | "ghost" | "light";
 type ButtonSize = "sm" | "md" | "lg";
 
 export interface ButtonProps
@@ -17,21 +18,20 @@ export interface ButtonProps
   as?: React.ElementType;
 }
 
-const baseClasses =
-  "inline-flex items-center justify-center rounded-full font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 disabled:opacity-60 disabled:cursor-not-allowed";
-
-const sizeClasses: Record<ButtonSize, string> = {
-  sm: "px-4 py-2 text-sm",
-  md: "px-6 py-3 text-base",
-  lg: "px-8 py-4 text-lg",
-};
-
-const variantClasses: Record<ButtonVariant, string> = {
-  solid:
-    "bg-linear-to-r from-primary to-secondary text-white shadow-md shadow-primary/30 hover:shadow-lg hover:shadow-primary/40",
-  bordered:
-    "border border-primary/40 text-foreground hover:bg-primary/10 hover:border-primary",
-  ghost: "text-primary hover:bg-primary/10",
+// Map Button variants to MagneticButton variants
+const mapVariant = (variant: ButtonVariant): "primary" | "secondary" | "ghost" | "outline" => {
+  switch (variant) {
+    case "solid":
+      return "primary";
+    case "bordered":
+      return "outline";
+    case "ghost":
+      return "ghost";
+    case "light":
+      return "ghost";
+    default:
+      return "primary";
+  }
 };
 
 export function Button({
@@ -45,6 +45,7 @@ export function Button({
   isIconOnly,
   disabled,
   as,
+  onClick,
   ...props
 }: ButtonProps) {
   const content = (
@@ -63,24 +64,47 @@ export function Button({
     </>
   );
 
-  const Component = as || "button";
-  const buttonProps = as
-    ? props
-    : { ...props, disabled: disabled || isLoading };
+  // If using as Link, render Link with button styling
+  if (as === Link || (as && typeof as !== "string")) {
+    const Component = as || Link;
+    const { href, ...linkProps } = props as any;
+    return (
+      <Component href={href} {...linkProps} className="inline-block">
+        <BaseMagneticButton
+          variant={mapVariant(variant)}
+          size={size}
+          disabled={disabled || isLoading}
+          className={className}
+          onClick={onClick as () => void}
+          glow={variant === "solid"}
+        >
+          {isLoading ? (
+            <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+          ) : (
+            content
+          )}
+        </BaseMagneticButton>
+      </Component>
+    );
+  }
 
+  // Regular button usage
   return (
-    <Component
-      className={`${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]} ${
-        isIconOnly ? "p-2 aspect-square" : ""
-      } ${className}`}
-      {...buttonProps}
+    <BaseMagneticButton
+      variant={mapVariant(variant)}
+      size={size}
+      disabled={disabled || isLoading}
+      className={className}
+      onClick={onClick as unknown as () => void}
+      glow={variant === "solid"}
+      {...props}
     >
       {isLoading ? (
         <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
       ) : (
         content
       )}
-    </Component>
+    </BaseMagneticButton>
   );
 }
 
