@@ -1,15 +1,16 @@
 "use client";
 
 import { Navbar, Footer } from "@/components/layout";
-import { HeroPremium, Services, Portfolio } from "@/components/sections";
+import { HeroPremium, Services, Portfolio, Blog } from "@/components/sections";
 
 export default function Home() {
   return (
-    <main className="relative pb-20 md:pb-0">
+    <main className="relative">
       <Navbar />
       <HeroPremium />
       <Services />
       <Portfolio />
+      <Blog />
       <Footer />
     </main>
   );
