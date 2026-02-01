@@ -17,7 +17,7 @@ export function Heading({ title, subtitle, centered = true, className = "" }: He
         variants={fadeInUp}
         className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 font-heading"
       >
-        <span className="bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
+        <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
           {title}
         </span>
       </motion.h2>

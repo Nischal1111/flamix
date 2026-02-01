@@ -12,6 +12,9 @@ import {
 } from "lucide-react";
 import { Section, Heading } from "@/components/ui";
 import { technologies } from "@/data/portfolio";
+import { motion } from "framer-motion";
+import { fadeInUp, staggerContainer } from "@/lib/animations";
+import { TextRevealSlant, TextRevealBlur, CountUp } from "@/components/ui/TextReveal";
 
 const values = [
   {
@@ -57,44 +60,68 @@ export function About() {
     <Section id="about" className="relative overflow-hidden">
       {/* Header */}
       <div className="text-center mb-16 md:mb-20">
-        <Heading
-          title="About Us"
-          subtitle="A team of passionate technologists dedicated to building exceptional software that makes a difference"
-        />
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 font-heading">
+          <TextRevealSlant className="text-3xl md:text-4xl lg:text-5xl font-bold font-heading">
+            About Us
+          </TextRevealSlant>
+        </h2>
+        <p className="text-foreground/60 text-lg md:text-xl max-w-2xl mx-auto">
+          <TextRevealBlur delay={0.2}>
+            A team of passionate technologists dedicated to building exceptional software that makes a difference
+          </TextRevealBlur>
+        </p>
       </div>
 
       {/* Stats Bar */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-20">
-        {stats.map((stat) => (
-          <div
-            key={stat.label}
-            className="p-6 md:p-8 rounded-2xl bg-muted/40 border border-primary/10"
-          >
-            <div className="flex flex-col items-center text-center">
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
-                <stat.icon className="w-6 h-6 text-primary" />
+      <motion.div
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true, margin: "-50px" }}
+        variants={staggerContainer}
+        className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-20 relative z-10"
+      >
+        {stats.map((stat, index) => {
+          const value = stat.value.replace(/[^0-9.]/g, '');
+          const suffix = stat.value.replace(/[0-9.]/g, '');
+          
+          return (
+            <motion.div
+              key={stat.label}
+              variants={fadeInUp}
+              className="p-6 md:p-8 rounded-2xl bg-background border border-foreground/10 hover:border-foreground/20 transition-all duration-300"
+            >
+              <div className="flex flex-col items-center text-center">
+                <div className="w-10 h-10 flex items-center justify-center mb-4">
+                  <stat.icon className="w-5 h-5 text-foreground/60" />
+                </div>
+                <div className="text-3xl md:text-4xl font-bold text-foreground mb-1">
+                  {value && !isNaN(parseFloat(value)) ? (
+                    <CountUp end={parseFloat(value)} suffix={suffix} duration={2} delay={index * 0.1} />
+                  ) : (
+                    stat.value
+                  )}
+                </div>
+                <div className="text-sm text-foreground/60 font-medium">
+                  {stat.label}
+                </div>
               </div>
-              <div className="text-3xl md:text-4xl font-bold bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent mb-1">
-                {stat.value}
-              </div>
-              <div className="text-sm text-foreground/60 font-medium">
-                {stat.label}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+            </motion.div>
+          );
+        })}
+      </motion.div>
 
       {/* Main Content */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start mb-20">
         {/* Left Content */}
         <div>
           <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 leading-tight font-heading">
+            <TextRevealSlant>
             We Build{" "}
-            <span className="bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
               Solutions
             </span>{" "}
             That Scale
+            </TextRevealSlant>
           </h3>
 
           <p className="text-foreground/60 text-lg leading-relaxed mb-6">
@@ -109,42 +136,53 @@ export function About() {
 
           {/* Highlights Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {highlights.map((item) => (
-              <div
+            {highlights.map((item, index) => (
+              <motion.div
                 key={item}
-                className="flex items-center gap-3 p-3 rounded-xl bg-muted/30 border border-primary/10"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="group flex items-center gap-3 p-4 rounded-xl bg-background border border-foreground/10 hover:border-foreground/20 transition-all duration-300"
               >
-                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                  <CheckCircle2 className="w-4 h-4 text-primary" />
+                <div className="w-8 h-8 flex items-center justify-center shrink-0">
+                  <CheckCircle2 className="w-4 h-4 text-foreground/60" />
                 </div>
                 <span className="text-sm font-medium text-foreground/70">
                   {item}
                 </span>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
 
         {/* Right Content - Values */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <motion.div
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={staggerContainer}
+          className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+        >
           {values.map((value) => (
-            <div
+            <motion.div
               key={value.title}
-              className="p-6 rounded-2xl bg-muted/40 border border-primary/10"
+              variants={fadeInUp}
+              className="p-6 rounded-2xl bg-background border border-foreground/10 hover:border-foreground/20 transition-all duration-300"
             >
-              <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
-                <value.icon className="w-7 h-7 text-primary" />
+              <div className="w-12 h-12 flex items-center justify-center mb-4">
+                <value.icon className="w-6 h-6 text-foreground/60" />
               </div>
 
-              <h4 className="font-bold text-lg mb-2">
+              <h4 className="font-bold text-lg mb-2 text-foreground">
                 {value.title}
               </h4>
               <p className="text-foreground/60 text-sm leading-relaxed">
                 {value.description}
               </p>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
 
       {/* Technologies Section */}
@@ -160,16 +198,23 @@ export function About() {
         </div>
 
         {/* Technologies Grid */}
-        <div className="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto">
-          {technologies.map((tech) => (
-            <span
+        <motion.div
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true }}
+          variants={staggerContainer}
+          className="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto"
+        >
+          {technologies.map((tech, index) => (
+            <motion.span
               key={tech}
-              className="px-5 py-2.5 rounded-full bg-muted/50 border border-primary/10 text-sm font-medium text-foreground/70"
+              variants={fadeInUp}
+              className="px-5 py-2.5 rounded-full bg-background border border-foreground/10 text-sm font-medium text-foreground/70 hover:border-foreground/20 transition-all duration-300 cursor-default"
             >
               {tech}
-            </span>
+            </motion.span>
           ))}
-        </div>
+        </motion.div>
       </div>
     </Section>
   );

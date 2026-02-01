@@ -218,6 +218,73 @@ export function TextRevealBlur({
   );
 }
 
+// Slanted reveal with rotation (like Apple's reveal animations)
+export function TextRevealSlant({
+  children,
+  className = "",
+  delay = 0,
+  once = true,
+}: TextRevealProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once, margin: "-50px" });
+
+  const words = children.split(" ");
+
+  const containerVariants: Variants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.06,
+        delayChildren: delay,
+      },
+    },
+  };
+
+  const wordVariants: Variants = {
+    hidden: {
+      opacity: 0,
+      y: 50,
+      rotateZ: -15,
+      rotateX: -60,
+      scale: 0.8,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      rotateZ: 0,
+      rotateX: 0,
+      scale: 1,
+      transition: {
+        duration: 0.7,
+        ease: easings.dramatic,
+      },
+    },
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
+      variants={containerVariants}
+      className={`inline-flex flex-wrap gap-x-2 ${className}`}
+      style={{ perspective: "1000px" }}
+    >
+      {words.map((word, index) => (
+        <span key={index} className="overflow-hidden inline-block" style={{ perspective: "1000px" }}>
+          <motion.span
+            variants={wordVariants}
+            className="inline-block"
+            style={{ transformOrigin: "center center", transformStyle: "preserve-3d" }}
+          >
+            {word}
+          </motion.span>
+        </span>
+      ))}
+    </motion.div>
+  );
+}
+
 // Gradient text reveal with animated background
 interface GradientTextRevealProps extends TextRevealProps {
   gradientFrom?: string;
@@ -237,29 +304,64 @@ export function GradientTextReveal({
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once, margin: "-50px" });
 
+  const words = children.split(" ");
+
+  const containerVariants: Variants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.06,
+        delayChildren: delay,
+      },
+    },
+  };
+
+  const wordVariants: Variants = {
+    hidden: {
+      opacity: 0,
+      y: 50,
+      rotateZ: -15,
+      rotateX: -60,
+      scale: 0.8,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      rotateZ: 0,
+      rotateX: 0,
+      scale: 1,
+      transition: {
+        duration: 0.7,
+        ease: easings.dramatic,
+      },
+    },
+  };
+
   return (
-    <div ref={ref} className="overflow-hidden">
-      <motion.div
-        initial={{ y: "100%", opacity: 0 }}
-        animate={isInView ? { y: 0, opacity: 1 } : { y: "100%", opacity: 0 }}
-        transition={{
-          duration: 0.8,
-          delay,
-          ease: easings.smooth,
-        }}
-        className={`
-          bg-gradient-to-r ${gradientFrom} ${gradientVia} ${gradientTo}
-          bg-clip-text text-transparent
-          bg-[length:200%_auto]
-          ${className}
-        `}
-        style={{
-          animation: isInView ? "shimmer 3s linear infinite" : "none",
-        }}
-      >
-        {children}
-      </motion.div>
-    </div>
+    <motion.div
+      ref={ref}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
+      variants={containerVariants}
+      className={`inline-flex flex-wrap gap-x-2 ${className}`}
+      style={{ perspective: "1000px" }}
+    >
+      {words.map((word, index) => (
+        <span key={index} className="overflow-hidden inline-block" style={{ perspective: "1000px" }}>
+          <motion.span
+            variants={wordVariants}
+            className={`inline-block bg-gradient-to-r ${gradientFrom} ${gradientVia} ${gradientTo} bg-clip-text text-transparent bg-[length:200%_auto]`}
+            style={{
+              transformOrigin: "center center",
+              transformStyle: "preserve-3d",
+              animation: isInView ? "shimmer 3s linear infinite" : "none",
+            }}
+          >
+            {word}
+          </motion.span>
+        </span>
+      ))}
+    </motion.div>
   );
 }
 

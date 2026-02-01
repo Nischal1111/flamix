@@ -15,6 +15,9 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { Section, Heading } from "@/components/ui";
+import { motion } from "framer-motion";
+import { fadeInUp, staggerContainer } from "@/lib/animations";
+import { TextRevealSlant, TextRevealBlur } from "@/components/ui/TextReveal";
 
 const contactInfo = [
   {
@@ -77,83 +80,119 @@ export function Contact() {
     <Section id="contact" className="relative overflow-hidden">
       {/* Header */}
       <div className="text-center mb-16 md:mb-20">
-        <Heading
-          title="Get in Touch"
-          subtitle="Ready to start your next project? Let's build something amazing together. We'd love to hear from you."
-        />
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 font-heading">
+          <TextRevealSlant className="text-3xl md:text-4xl lg:text-5xl font-bold font-heading">
+            Get in Touch
+          </TextRevealSlant>
+        </h2>
+        <p className="text-foreground/60 text-lg md:text-xl max-w-2xl mx-auto">
+          <TextRevealBlur delay={0.2}>
+            Ready to start your next project? Let's build something amazing together. We'd love to hear from you.
+          </TextRevealBlur>
+        </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
         {/* Contact Info Column */}
         <div className="lg:col-span-2 space-y-6">
           {/* Contact Cards */}
-          <div className="space-y-4">
+          <motion.div
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={staggerContainer}
+            className="space-y-4"
+          >
             {contactInfo.map((item) => (
-              <a
+              <motion.a
                 key={item.label}
                 href={item.href}
-                className="flex items-start gap-4 p-5 rounded-2xl bg-muted/40 border border-primary/10"
+                variants={fadeInUp}
+                className="flex items-start gap-4 p-5 rounded-2xl bg-background border border-foreground/10 hover:border-foreground/20 transition-all duration-300"
               >
-                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center shrink-0">
-                  <item.icon className="w-6 h-6 text-primary" />
+                <div className="w-12 h-12 flex items-center justify-center shrink-0">
+                  <item.icon className="w-6 h-6 text-foreground/60" />
                 </div>
                 <div>
                   <p className="text-xs text-foreground/50 uppercase tracking-wider mb-1">
                     {item.label}
                   </p>
-                  <p className="font-semibold text-lg">
+                  <p className="font-semibold text-lg text-foreground">
                     {item.value}
                   </p>
                   <p className="text-sm text-foreground/50 mt-1">{item.description}</p>
                 </div>
-              </a>
+              </motion.a>
             ))}
-          </div>
+          </motion.div>
 
           {/* Schedule CTA */}
-          <div className="relative p-6 rounded-3xl bg-primary/10 border border-primary/20">
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-xl bg-linear-to-br from-primary to-secondary flex items-center justify-center">
-                  <Calendar className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-lg">Schedule a Call</h4>
-                  <p className="text-sm text-foreground/60">Free 30-min consultation</p>
-                </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="p-6 rounded-2xl bg-background border border-foreground/10 hover:border-foreground/20 transition-all duration-300"
+          >
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 flex items-center justify-center">
+                <Calendar className="w-6 h-6 text-foreground/60" />
               </div>
-
-              <div className="flex items-center gap-2 text-sm text-foreground/60 mb-4">
-                <Clock className="w-4 h-4" />
-                <span>Available Mon-Fri, 9am-6pm PST</span>
+              <div>
+                <h4 className="font-bold text-lg text-foreground">Schedule a Call</h4>
+                <p className="text-sm text-foreground/60">Free 30-min consultation</p>
               </div>
-
-              <Button
-                className="w-full bg-linear-to-r from-primary to-secondary text-white rounded-full py-6 font-semibold"
-                endContent={<ArrowRight className="w-4 h-4" />}
-              >
-                Book a Meeting
-              </Button>
             </div>
-          </div>
+
+            <div className="flex items-center gap-2 text-sm text-foreground/60 mb-4">
+              <Clock className="w-4 h-4" />
+              <span>Available Mon-Fri, 9am-6pm PST</span>
+            </div>
+
+            <Button
+              className="w-full bg-foreground text-background rounded-full py-6 font-semibold hover:opacity-90 transition-opacity duration-300"
+              endContent={<ArrowRight className="w-4 h-4" />}
+            >
+              Book a Meeting
+            </Button>
+          </motion.div>
 
           {/* Benefits */}
-          <div className="p-5 rounded-2xl bg-muted/30 border border-primary/10">
-            <h4 className="font-semibold mb-4">What you&apos;ll get:</h4>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="p-5 rounded-2xl bg-background border border-foreground/10 hover:border-foreground/20 transition-all duration-300"
+          >
+            <h4 className="font-semibold mb-4 text-foreground">What you&apos;ll get:</h4>
             <div className="space-y-3">
-              {benefits.map((benefit) => (
-                <div key={benefit} className="flex items-center gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-primary shrink-0" />
+              {benefits.map((benefit, index) => (
+                <motion.div
+                  key={benefit}
+                  initial={{ opacity: 0, x: -10 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: 0.4 + index * 0.1 }}
+                  className="flex items-center gap-3"
+                >
+                  <CheckCircle2 className="w-5 h-5 text-foreground/60 shrink-0" />
                   <span className="text-sm text-foreground/70">{benefit}</span>
-                </div>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
 
         {/* Contact Form Column */}
-        <div className="lg:col-span-3">
-          <div className="relative p-8 md:p-10 rounded-3xl bg-muted/40 border border-primary/10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="lg:col-span-3"
+        >
+          <div className="p-8 md:p-10 rounded-2xl bg-background border border-foreground/10 hover:border-foreground/20 transition-all duration-300">
             <div className="relative">
               {/* Success Message */}
               {isSuccess && (
@@ -252,7 +291,7 @@ export function Contact() {
                   type="submit"
                   size="lg"
                   isLoading={isSubmitting}
-                  className="w-full bg-linear-to-r from-primary to-secondary text-white rounded-full py-7 text-lg font-semibold"
+                  className="w-full bg-foreground text-background rounded-full py-7 text-lg font-semibold hover:opacity-90 transition-opacity duration-300"
                   endContent={!isSubmitting && <Send className="w-5 h-5" />}
                 >
                   {isSubmitting ? "Sending..." : "Send Message"}
@@ -267,7 +306,7 @@ export function Contact() {
               </form>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </Section>
   );

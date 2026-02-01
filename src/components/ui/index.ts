@@ -16,6 +16,7 @@ export {
 export {
   TextRevealChar,
   TextRevealWord,
+  TextRevealSlant,
   TextRevealMask,
   TextRevealBlur,
   GradientTextReveal,

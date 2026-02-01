@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeInUp, staggerContainer, textReveal } from "@/lib/animations";
+import { TextRevealSlant, GradientTextReveal, TextRevealBlur } from "@/components/ui/TextReveal";
 
 export function Hero() {
   const scrollToSection = (href: string) => {
@@ -48,18 +49,24 @@ export function Hero() {
           >
             <motion.div variants={fadeInUp} className="mb-2 sm:mb-4">
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-medium leading-[1.1] tracking-tight font-heading">
-                <span className="block">Transforming Ideas</span>
+                <TextRevealSlant className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-medium leading-[1.1] tracking-tight font-heading">
+                  Transforming Ideas
+                </TextRevealSlant>
               </h1>
             </motion.div>
             <motion.div variants={fadeInUp}>
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-medium leading-[1.1] tracking-tight font-heading">
-                Into{" "}
                 <span className="relative inline-block">
-                  <span className="bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent bg-[length:200%_auto] animate-[shimmer_3s_linear_infinite]">
-                    Digital Excellence
-                  </span>
+                  <GradientTextReveal className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-medium leading-[1.1] tracking-tight font-heading" delay={0.2}>
+                    Into Digital Excellence
+                  </GradientTextReveal>
                   {/* Underline accent */}
-                  <span className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-primary via-secondary to-primary rounded-full opacity-60" />
+                  <motion.span
+                    className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-primary via-secondary to-primary rounded-full opacity-60"
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ duration: 0.8, delay: 0.8 }}
+                  />
                 </span>
               </h1>
             </motion.div>

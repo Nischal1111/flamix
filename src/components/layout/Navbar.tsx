@@ -85,7 +85,7 @@ export function Navbar() {
 
           {/* CTA Button */}
           <Button
-            className="bg-linear-to-r from-primary to-secondary text-white rounded-full px-6 ml-2"
+            className="bg-gradient-to-r from-primary to-secondary text-white rounded-full px-6 ml-2"
             size="sm"
             as={Link}
             href="/contact"

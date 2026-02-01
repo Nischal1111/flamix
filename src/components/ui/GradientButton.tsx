@@ -32,7 +32,7 @@ export function GradientButton({
   };
 
   const variantClasses = {
-    solid: "bg-linear-to-r from-primary to-secondary text-white hover:opacity-90",
+    solid: "bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90",
     outline: "border-2 border-primary text-primary hover:bg-primary hover:text-white",
     ghost: "text-primary hover:bg-primary/10",
   };
